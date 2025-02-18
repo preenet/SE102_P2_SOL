@@ -3,7 +3,7 @@ import java.util.*;
 
 public class TextProcessing {
     public static void main(String[] args) {
-        String filename = "input_large.txt";
+        String filename = "input.txt";
         long startTime = System.nanoTime();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -32,8 +32,8 @@ public class TextProcessing {
                     }
                 }
 
-                // Detect emoticons (basic smiley and sad faces)
-                emoticonCount += countEmoticons(line);
+                // Detect emoticons and emojis
+                emoticonCount += countEmoticons(line) + countEmojis(line);
             }
 
             int longestToken = tokenSizes.isEmpty() ? 0 : Collections.max(tokenSizes);
@@ -88,5 +88,10 @@ public class TextProcessing {
             }
         }
         return count;
+    }
+    
+    private static int countEmojis(String line) {
+        List<String> emojis = EmojiParser.extractEmojis(line);
+        return emojis.size();
     }
 }
